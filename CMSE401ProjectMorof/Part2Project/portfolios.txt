@@ -1,0 +1,35 @@
+# Portfolio with 3 assets
+BTC 0.5
+ETH 5
+SOL 10
+
+# Portfolio with 5 assets
+BTC 0.5
+ETH 5
+SOL 10
+BNB 8
+XRP 1000
+
+# Portfolio with 8 assets
+BTC 0.5
+ETH 5
+SOL 10
+BNB 8
+XRP 1000
+DOGE 2000
+ADA 1500
+TRX 3000
+
+# Portfolio with 12 assets
+BTC 0.5
+ETH 5
+SOL 10
+BNB 8
+XRP 1000
+DOGE 2000
+ADA 1500
+TRX 3000
+LINK 100
+AVAX 50
+SHIB 5000000
+DOT 200

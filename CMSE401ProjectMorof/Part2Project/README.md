@@ -1,37 +1,123 @@
-# Software Abstract
-This software example demonstrates the use of Python for real-time cryptocurrency price tracking utilizing asynchronous programming (asyncio) in combination with asynchronous HTTP requests (aiohttp). Specifically, this example leverages the CoinMarketCap API to fetch cryptocurrency prices concurrently, significantly reducing the total retrieval time compared to sequential fetching methods.
+# Crypto Portfolio Valuation Project
 
-## What is this Software?
-The Crypto Portfolio Price Tracker is an example of application-level software leveraging modern asynchronous programming techniques. It integrates Python's built-in concurrency framework (asyncio) with the efficient asynchronous HTTP client library (aiohttp) to create a robust and high-performance API request handler.
+This project demonstrates how to value a cryptocurrency portfolio using live price data from the CoinMarketCap (CMC) API.  
+It also compares the performance of serial vs parallel API calls when valuing a portfolio of different sizes.
 
-The primary functions of this software include:
+---
 
-- Fetching real-time cryptocurrency prices concurrently.
-- Displaying retrieved price data clearly and succinctly in a command-line environment.
-- Demonstrating how asynchronous methods can significantly improve efficiency when interacting with web-based APIs.
+## 📥 Setup Instructions
 
-## Applications in Science and Engineering
-This type of software is highly relevant across multiple fields in science, engineering, and especially finance and data science, due to its capability to handle extensive real-time data efficiently.
+1. **Clone or download the project folder** to your local machine.
 
-Specific Applications Include:
+2. **Install required Python packages** if you haven't already:
+   ```bash
+   pip install aiohttp python-dotenv matplotlib pandas
+   ```
 
-Financial Analysis & Trading Systems:
-- Utilized in algorithmic trading to rapidly process and analyze financial data for arbitrage detection and real-time price monitoring.
+3. **Get a free CoinMarketCap API Key**:
+   - Visit [https://coinmarketcap.com/api/](https://coinmarketcap.com/api/).
+   - Create a free account.
+   - Copy your personal API key.
 
-Data Engineering and Science:
-- Essential for efficiently fetching and aggregating large datasets, particularly from web-based sources, for immediate analytical processing and machine learning applications.
+4. **Create a `.env` file** in your project directory:
+   ```
+   CMC_API_KEY=your_actual_api_key_here
+   ```
 
-Real-Time Systems and Dashboards:
-- Commonly used for creating real-time visualization dashboards, alert systems, or decision-support tools in scientific research, IoT monitoring, and engineering analytics.
+   This key is needed for all scripts to access live cryptocurrency data.
 
-## Software Type
-This software can be categorized as an application-level programming tool, which serves as an efficient wrapper around external API services. It simplifies the complex task of concurrent network operations, abstracting away intricate management of parallel HTTP requests through simple and maintainable Python code.
+---
 
-Software Layers & Roles:
+## 📁 Project File Overview
 
-- API Layer (CoinMarketCap API): Provides comprehensive real-time cryptocurrency market data.
-- Middleware Layer (aiohttp): Handles asynchronous network communication and HTTP management.
-- Programming Framework (asyncio): Coordinates and schedules concurrent tasks for optimized performance.
-- Application Layer (Python Script): Provides an intuitive interface for users to fetch and interact with real-time crypto prices effectively.
+### Basic Portfolio Test
 
-# Instilation Instructions
+These files perform a **simple portfolio valuation** using either serial or parallel fetching:
+
+- `basic_portfolio.txt`  
+  A small manually defined portfolio (fixed assets and amounts).
+
+- `portfolio_serial.py`  
+  - Reads the `basic_portfolio.txt` file.
+  - Fetches live crypto prices **serially** (one by one).
+  - Prints the individual holding values and total portfolio value.
+
+- `portfolio_parallel.py`  
+  - Reads the same `basic_portfolio.txt` file.
+  - Fetches live crypto prices **in parallel** (asynchronous multiple calls).
+  - Prints the individual holding values and total portfolio value.
+
+Use these scripts for a quick demo of serial vs parallel behavior on a simple, small portfolio.
+
+---
+
+### Benchmarking Portfolio Tests
+
+This is the **full benchmarking and performance comparison** part of the project.
+
+- `portfolios.txt`  
+  - Predefined larger portfolios (3, 5, 8, and 12 assets) used for timing tests.
+  - No randomness — fully reproducible across runs.
+
+- `benchmark_serial.py`  
+  - Values portfolios **serially**.
+  - Records the time taken for each portfolio.
+  - Plots timing results.
+  - Saves detailed timing data into `serial_benchmark_results.csv`.
+
+- `benchmark_parallel.py`  
+  - Values portfolios **in parallel** using `asyncio` and `aiohttp`.
+  - Records the time taken for each portfolio.
+  - Plots timing results.
+  - Saves detailed timing data into `parallel_benchmark_results.csv`.
+
+- `compare_serial_parallel.py`  
+  - Reads the timing results from the two CSV files.
+  - Creates two comparison plots:
+    - **Serial vs Parallel Timing** (`serial_vs_parallel_timing.png`)
+    - **Speedup Factor** (`speedup_factor.png`)
+  - Highlights the differences between serial and parallel performance.
+
+---
+
+## 📈 Output Files
+
+After running the scripts, you will generate:
+
+- `benchmark_serial_results.png` – Timing graph for serial valuation.
+- `benchmark_parallel_results.png` – Timing graph for parallel valuation.
+- `serial_benchmark_results.csv` – Raw timing results for serial runs.
+- `parallel_benchmark_results.csv` – Raw timing results for parallel runs.
+- `serial_vs_parallel_timing.png` – Side-by-side timing comparison plot.
+- `speedup_factor.png` – Speedup factor plot showing how much faster parallel execution is.
+
+---
+
+## 🛠 How to Run Everything
+
+1. Set up your `.env` file with your API key.
+2. (Optional) Start with `portfolio_serial.py` and `portfolio_parallel.py` for a quick simple test.
+3. Run the full benchmark tests:
+   ```bash
+   python benchmark_serial.py
+   python benchmark_parallel.py
+   ```
+4. Compare results:
+   ```bash
+   python compare_serial_parallel.py
+   ```
+
+---
+
+## 📋 Notes and Important Information
+
+- **API Rate Limits:** The CoinMarketCap Free API limits you to 30 requests per minute.  
+  This project stays within that limit safely by controlling portfolio sizes and splitting benchmarks into two scripts.
+
+- **Expected Behavior:**  
+  Parallel execution reduces wait time when the server allows concurrent responses.  
+  However, public APIs like CoinMarketCap may introduce server-side bottlenecks that affect overall speedup potential.
+
+- **Portfolio Values:**  
+  Portfolio valuations are based on **live prices** at the time of execution.  
+  Results may vary slightly if re-run at a different time.
